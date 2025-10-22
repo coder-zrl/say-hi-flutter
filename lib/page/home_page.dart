@@ -4,14 +4,16 @@ import 'package:say_hi_flutter/page/tabs/discover_page.dart';
 import 'package:say_hi_flutter/page/tabs/mine_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int initialIndex;
+
+  const HomePage({super.key, this.initialIndex = 0});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  late int _currentIndex;
 
   // 三个页面
   final List<Widget> _pages = [
@@ -19,6 +21,12 @@ class _HomePageState extends State<HomePage> {
     ChatPage(),
     MinePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
