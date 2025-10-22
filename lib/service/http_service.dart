@@ -38,15 +38,15 @@ class HttpService {
         print('  方法: ${options.method}');
         print('  Headers: ${options.headers}');
         if (options.data != null) {
-          print('  数据: ${options.data}');
+          // print('  数据: ${options.data}');
         }
 
         handler.next(options);
       },
       onResponse: (response, handler) {
-        print('📥 响应详情:');
-        print('  状态码: ${response.statusCode}');
-        print('  数据: ${response.data}');
+        // print('📥 响应详情:');
+        // print('  状态码: ${response.statusCode}');
+        // print('  数据: ${response.data}');
         handler.next(response);
       },
       onError: (error, handler) async {
@@ -56,7 +56,7 @@ class HttpService {
         print('  消息: ${error.message}');
         if (error.response != null) {
           print('  状态码: ${error.response?.statusCode}');
-          print('  响应数据: ${error.response?.data}');
+          // print('  响应数据: ${error.response?.data}');
         }
         _handleError(error);
         handler.next(error);
