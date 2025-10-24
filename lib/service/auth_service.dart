@@ -4,6 +4,7 @@ import '../model/login_model.dart';
 import '../service/http_service.dart';
 import '../service/storage_service.dart';
 import '../service/response_handler.dart';
+import '../service/websocket_service.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -36,12 +37,30 @@ class AuthService {
           successMessage: '登录成功',
         );
 
-        // 如果登录成功，保存token
+        // 如果登录成功，保存token和用户信息
         if (isSuccess && apiResponse.data != null) {
           await StorageService.saveToken(
-            apiResponse.data!.tokenName,
-            apiResponse.data!.tokenValue,
+            apiResponse.data!.tokenInfo.tokenName,
+            apiResponse.data!.tokenInfo.tokenValue,
           );
+
+          // 保存用户信息
+          await StorageService.saveUserInfo(apiResponse.data!.userInfo);
+          await StorageService.saveUsername(username);
+
+          // 登录成功后重新建立WebSocket连接
+          try {
+            // 1. 先断开当前的长连接
+            WebSocketService.instance.disconnect();
+
+            // 2. 使用resp中返回的userId建立新的长连接
+            await WebSocketService.instance.connect(
+              userId: apiResponse.data!.userInfo.userId.toString(),
+            );
+          } catch (e) {
+            print('WebSocket连接失败: $e');
+            // WebSocket连接失败不影响登录结果
+          }
         }
 
         return isSuccess;
@@ -60,8 +79,12 @@ class AuthService {
 
   Future<void> logout() async {
     try {
-      // 清除本地存储的token
+      // 断开WebSocket连接
+      WebSocketService.instance.disconnect();
+
+      // 清除本地存储的token和用户信息
       await StorageService.clearToken();
+      await StorageService.clearUserInfo();
 
       // 这里可以调用服务器端的登出接口
       // await _httpService.post(ApiPaths.userLogout);

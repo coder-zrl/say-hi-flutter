@@ -1,3 +1,31 @@
+class UserInfo {
+  final int userId;
+  final String nickName;
+  final String avatar;
+
+  UserInfo({
+    required this.userId,
+    required this.nickName,
+    required this.avatar,
+  });
+
+  factory UserInfo.fromJson(Map<String, dynamic> json) {
+    return UserInfo(
+      userId: json['userId'] ?? 0,
+      nickName: json['nickName'] ?? '',
+      avatar: json['avatar'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'nickName': nickName,
+      'avatar': avatar,
+    };
+  }
+}
+
 class LoginRequest {
   final String username;
   final String password;
@@ -38,20 +66,20 @@ class LoginResponse {
   }
 }
 
-class LoginData {
+class TokenInfo {
   final String tokenName;
   final String tokenValue;
   final bool isLogin;
-  final String loginId;
+  final dynamic loginId;
   final String loginType;
   final int tokenTimeout;
   final int sessionTimeout;
   final int tokenSessionTimeout;
   final int tokenActiveTimeout;
   final String loginDeviceType;
-  final String? tag;
+  final String tag;
 
-  LoginData({
+  TokenInfo({
     required this.tokenName,
     required this.tokenValue,
     required this.isLogin,
@@ -62,22 +90,39 @@ class LoginData {
     required this.tokenSessionTimeout,
     required this.tokenActiveTimeout,
     required this.loginDeviceType,
-    this.tag,
+    required this.tag,
   });
 
-  factory LoginData.fromJson(Map<String, dynamic> json) {
-    return LoginData(
+  factory TokenInfo.fromJson(Map<String, dynamic> json) {
+    return TokenInfo(
       tokenName: json['tokenName'] ?? '',
       tokenValue: json['tokenValue'] ?? '',
       isLogin: json['isLogin'] ?? false,
-      loginId: json['loginId']?.toString() ?? '',
+      loginId: json['loginId'],
       loginType: json['loginType'] ?? '',
       tokenTimeout: json['tokenTimeout'] ?? 0,
       sessionTimeout: json['sessionTimeout'] ?? 0,
       tokenSessionTimeout: json['tokenSessionTimeout'] ?? 0,
       tokenActiveTimeout: json['tokenActiveTimeout'] ?? 0,
       loginDeviceType: json['loginDeviceType'] ?? '',
-      tag: json['tag'],
+      tag: json['tag'] ?? '',
+    );
+  }
+}
+
+class LoginData {
+  final UserInfo userInfo;
+  final TokenInfo tokenInfo;
+
+  LoginData({
+    required this.userInfo,
+    required this.tokenInfo,
+  });
+
+  factory LoginData.fromJson(Map<String, dynamic> json) {
+    return LoginData(
+      userInfo: UserInfo.fromJson(json['userInfo'] ?? {}),
+      tokenInfo: TokenInfo.fromJson(json['tokenInfo'] ?? {}),
     );
   }
 }

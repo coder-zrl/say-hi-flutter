@@ -4,6 +4,7 @@ import 'package:say_hi_flutter/model/chat_info_model.dart';
 import 'package:say_hi_flutter/service/chat_service.dart';
 import 'package:say_hi_flutter/service/storage_service.dart';
 import 'package:say_hi_flutter/widget/swipeable_chat_item.dart';
+import 'package:say_hi_flutter/page/chat_detail_page.dart';
 
 // 消息页面
 class ChatPage extends StatefulWidget {
@@ -470,7 +471,12 @@ class _ChatPageState extends State<ChatPage> {
           : Colors.transparent, // 普通会话使用透明背景
       child: InkWell(
         onTap: () {
-          // TODO: 导航到聊天详情页面
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatDetailPage(chatInfo: chatInfo),
+            ),
+          );
         },
         child: ListTile(
           leading: CircleAvatar(

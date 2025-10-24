@@ -2,7 +2,7 @@ class ChatInfo {
   /**
    * 会话ID
    */
-  final String chatId;
+  final int chatId;
 
   /**
    * 会话头像
@@ -79,7 +79,7 @@ class ChatInfo {
       print('📥 ChatInfo.fromJson - 输入数据: $json');
 
       return ChatInfo(
-        chatId: json['chatId'] as String? ?? '',
+        chatId: (json['chatId'] as num?)?.toInt() ?? 0,
         avatar: json['avatar'] as String?,
         chatTitle: json['chatTitle'] as String? ?? '',
         lastMessageTime: (json['lastMessageTime'] as int?) ?? 0,
@@ -117,7 +117,7 @@ class ChatInfo {
   }
 
   ChatInfo copyWith({
-    String? chatId,
+    int? chatId,
     String? avatar,
     String? chatTitle,
     int? lastMessageTime,

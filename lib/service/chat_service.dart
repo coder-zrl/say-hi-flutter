@@ -80,12 +80,12 @@ class ChatService {
 
   /// 删除会话
   /// [chatId] 会话ID
-  Future<bool> deleteChat(String chatId) async {
+  Future<bool> deleteChat(int chatId) async {
     try {
       print('🗑️ 开始删除会话: $chatId');
 
       final response = await _httpService.delete<dynamic>(
-        '${ApiPaths.chatList}/$chatId',
+        '${ApiPaths.chatList}/${chatId.toString()}',
       );
 
       print('📥 删除会话响应: 状态码 ${response.statusCode}');
@@ -106,12 +106,12 @@ class ChatService {
   /// 切换置顶状态
   /// [chatId] 会话ID
   /// [stickyTop] 是否置顶
-  Future<bool> togglePin(String chatId, bool stickyTop) async {
+  Future<bool> togglePin(int chatId, bool stickyTop) async {
     try {
       print('📌 开始切换置顶状态: $chatId, stickyTop: $stickyTop');
 
       final response = await _httpService.put<dynamic>(
-        '${ApiPaths.chatList}/$chatId/pin',
+        '${ApiPaths.chatList}/${chatId.toString()}/pin',
         data: {
           'stickyTop': stickyTop,
         },
@@ -135,12 +135,12 @@ class ChatService {
   /// 切换免打扰状态
   /// [chatId] 会话ID
   /// [doNotDisturb] 是否免打扰
-  Future<bool> toggleMute(String chatId, bool doNotDisturb) async {
+  Future<bool> toggleMute(int chatId, bool doNotDisturb) async {
     try {
       print('🔕 开始切换免打扰状态: $chatId, doNotDisturb: $doNotDisturb');
 
       final response = await _httpService.put<dynamic>(
-        '${ApiPaths.chatList}/$chatId/mute',
+        '${ApiPaths.chatList}/${chatId.toString()}/mute',
         data: {
           'doNotDisturb': doNotDisturb,
         },

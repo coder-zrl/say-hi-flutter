@@ -1,7 +1,7 @@
-class HttpConfig {
-  static const String _baseUrl = 'http://localhost:10086';
+import 'api_paths.dart';
 
-  static String get baseUrl => _baseUrl;
+class HttpConfig {
+  static String get baseUrl => ApiPaths.baseUrl;
 
   static const Duration connectTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
